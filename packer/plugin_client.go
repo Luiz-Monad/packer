@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -119,6 +120,16 @@ func NewClient(config *PluginClientConfig) (c *PluginClient) {
 	c = &PluginClient{config: config}
 	if config.Managed {
 		managedClients = append(managedClients, c)
+	}
+
+	if testAddr := os.Getenv("PACKER_PLUGIN_CLIENT_DEBUG"); testAddr != "" {
+		var cmd = strings.ReplaceAll(strings.ToUpper(config.Cmd.Args[2]), "-", "_")
+		var port, _ = strconv.Atoi(os.Getenv(fmt.Sprintf("%s_PORT", cmd)))
+		var port2, _ = strconv.Atoi(os.Getenv(fmt.Sprintf("PACKER_%s_PORT", cmd)))
+		if port == 0 {
+			port = port2
+		}
+		c.address, _ = net.ResolveTCPAddr("tcp", fmt.Sprintf("%s:%d", testAddr, port))
 	}
 
 	return

@@ -7,6 +7,7 @@ package command
 import (
 	"fmt"
 	"log"
+	"os"
 	"regexp"
 	"strings"
 
@@ -129,6 +130,11 @@ func (c *ExecuteCommand) Run(args []string) int {
 			return 1
 		}
 		server.RegisterDatasource(datasource)
+	}
+
+	if os.Getenv("PACKER_PLUGIN_SERVER_DEBUG") != "" {
+		go server.Serve()
+		return c.Run(args)
 	}
 
 	server.Serve()

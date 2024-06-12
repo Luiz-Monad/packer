@@ -1,0 +1,20 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "go",
+			"label": "go: build",
+			"command": "build",
+			"options": {
+				"cwd": "${workspaceFolder}/"
+			},
+			"args": [
+				"-o", "packer.exe"
+			],
+			"problemMatcher": [
+				"$go"
+			],
+			"group": "build",
+		}
+	]
+}

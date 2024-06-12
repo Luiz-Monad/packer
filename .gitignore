@@ -29,4 +29,6 @@ Thumbs.db
 /packer.exe
 .project
 cache
-/.vscode/
+
+/packer_cache
+__debug_bin*
